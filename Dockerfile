@@ -1,6 +1,7 @@
 # Pull base image 
-From tomcat:latest
+FROM tomcat:8.0-alpine
 
-# Maintainer 
-MAINTAINER "valaxytech@gmail.com" 
+LABEL maintainer="deepak@softwareyoga.com"
 ADD webapp.war /usr/local/tomcat/webapps/
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
