@@ -1,5 +1,5 @@
 # Pull base image 
-FROM tomcat:8.0-alpine
+FROM rightctrl/tomcat
 
 LABEL maintainer="deepak@softwareyoga.com"
 ADD webapp.war /usr/local/tomcat/webapps/
