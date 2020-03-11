@@ -103,7 +103,4 @@
             mode: '1777'
 
         - name: Build Docker image from Dockerfile
-          docker_image:
-              name: web
-              path: docker
-              state: build
+          command: docker build -t devops-image .
