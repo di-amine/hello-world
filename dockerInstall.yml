@@ -102,11 +102,13 @@
         #     path: /var/run/docker.sock
         #     mode: '1777'
 
-        # - name: Build Docker image from Dockerfile
-        #   command: docker	build	-t	simple-devops-image	.
-
         - name: Build Docker image from Dockerfile
-          docker_image:
-            name: web
-            path: docker
-            state: build
+          command: docker	build	-t	simple-devops-image	.
+          arges: 
+            chdir: /opt/docker
+
+        # - name: Build Docker image from Dockerfile
+        #   docker_image:
+        #     name: web
+        #     path: docker
+        #     state: build
