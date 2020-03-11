@@ -4,103 +4,109 @@
       become: True
       tasks:  
     
-        - name: update the system
-          yum:
-            name: "*"
-            state: latest
+        # - name: update the system
+        #   yum:
+        #     name: "*"
+        #     state: latest
     
-        - name: Ensure Java is installed.
-          package:
-            name: java-11-openjdk
-            state: present
+        # - name: Ensure Java is installed.
+        #   package:
+        #     name: java-11-openjdk
+        #     state: present
     
-        - name: Ensure Git is installed.
-          package:
-            name: git
-            state: present
-    
-    
-    
-        - name: Creates directory
-          file:
-            path: /home/vagrant/jenkins/
-            state: directory
-    
-        - name: restart system to reboot to newest kernel
-          shell: "sleep 5 && reboot"
-          async: 1
-          poll: 0
-    
-        - name: wait for 10 seconds
-          pause:
-            seconds: 10
-    
-        - name: wait for the system to reboot
-          wait_for_connection:
-            connect_timeout: 20
-            sleep: 5
-            delay: 5
-            timeout: 60
-    
-        - name: Ensure old versions of Docker are not installed
-          package:
-            name:
-              - docker
-              - docker-client
-              - docker-clent-latest
-              - docker-common
-              - docker-engine
-              - docker-latest
-              - docker-latest-logrotate
-              - docker-logrotate 
-            state: absent
-    
-        - name: Install Pip
-          easy_install:
-            name: pip
-            state: latest
-    
-        - name: Ensure tools are installed
-          yum:
-            name: yum-utils, device-mapper-persistent-data, lvm2
-            state: present
-    
-        - name: Add repository
-          shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+        # - name: Ensure Git is installed.
+        #   package:
+        #     name: git
+        #     state: present
     
     
-        - name: Ensure docker files are installed
-          yum:
-            name: docker-ce, docker-ce-cli, containerd.io
-            state: present
     
-        - name: Install dependent python docker modules
-          pip:
-            name: docker-py
-            state: present
+        # - name: Creates directory
+        #   file:
+        #     path: /home/vagrant/jenkins/
+        #     state: directory
     
-        - name: Ensure Docker is started
-          systemd:
-            state: started
-            name: docker  
+        # - name: restart system to reboot to newest kernel
+        #   shell: "sleep 5 && reboot"
+        #   async: 1
+        #   poll: 0
     
-        - name: Ensure Docker is enabled
-          shell: systemctl enable docker
+        # - name: wait for 10 seconds
+        #   pause:
+        #     seconds: 10
     
-        - name: Ensure group "docker" exists
-          group:
-            name: docker
-            state: present
+        # - name: wait for the system to reboot
+        #   wait_for_connection:
+        #     connect_timeout: 20
+        #     sleep: 5
+        #     delay: 5
+        #     timeout: 60
     
-        - name: Add the user 'johnd' with a specific uid and a primary group of 'admin'
-          user:
-            name: vagrant
-            group: docker
+        # - name: Ensure old versions of Docker are not installed
+        #   package:
+        #     name:
+        #       - docker
+        #       - docker-client
+        #       - docker-clent-latest
+        #       - docker-common
+        #       - docker-engine
+        #       - docker-latest
+        #       - docker-latest-logrotate
+        #       - docker-logrotate 
+        #     state: absent
+    
+        # - name: Install Pip
+        #   easy_install:
+        #     name: pip
+        #     state: latest
+    
+        # - name: Ensure tools are installed
+        #   yum:
+        #     name: yum-utils, device-mapper-persistent-data, lvm2
+        #     state: present
+    
+        # - name: Add repository
+        #   shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    
+    
+        # - name: Ensure docker files are installed
+        #   yum:
+        #     name: docker-ce, docker-ce-cli, containerd.io
+        #     state: present
+    
+        # - name: Install dependent python docker modules
+        #   pip:
+        #     name: docker-py
+        #     state: present
+    
+        # - name: Ensure Docker is started
+        #   systemd:
+        #     state: started
+        #     name: docker  
+    
+        # - name: Ensure Docker is enabled
+        #   shell: systemctl enable docker
+    
+        # - name: Ensure group "docker" exists
+        #   group:
+        #     name: docker
+        #     state: present
+    
+        # - name: Add the user 'johnd' with a specific uid and a primary group of 'admin'
+        #   user:
+        #     name: vagrant
+        #     group: docker
 
-        - name: Give insecure permissions to an existing file
-          file:
-            path: /var/run/docker.sock
-            mode: '1777'
+        # - name: Give insecure permissions to an existing file
+        #   file:
+        #     path: /var/run/docker.sock
+        #     mode: '1777'
+
+        # - name: Build Docker image from Dockerfile
+        #   command: docker	build	-t	simple-devops-image	.
 
         - name: Build Docker image from Dockerfile
-          command: docker build -t devops-image .
+          docker_image:
+            name: web
+            path: docker
+            state: build
