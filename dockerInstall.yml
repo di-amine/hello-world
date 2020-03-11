@@ -102,7 +102,8 @@
             path: /var/run/docker.sock
             mode: '1777'
 
-        - name: Build an image and push it to a private repo
+        - name: Build Docker image from Dockerfile
           docker_image:
-            build:
-                path: ./
+              name: web
+              path: docker
+              state: build
